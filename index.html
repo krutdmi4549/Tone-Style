@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ton&Style</title>
+  <link rel="stylesheet" href="./css/reset.css">
+  <link rel="stylesheet" href="./css/fonts.css">
+  <link rel="stylesheet" href="./css/style.css">
+  <link rel="shortcut icon" href="./image/logo.JPG" type="image/x-icon">
+</head>
+
+<body>
+  <div class="wrapper">
+    <div class="header">
+      <div class="header__inner">
+        <div id="headerTopWrapper">
+          <div class="header__top">
+            <div class="container">
+              <div class="header__top-inner">
+                <div class="header__logo">
+                  <img class="header__img-logo" src="image/AirPods.jpg" alt="Логотип">
+                  <p class="logo__text">Tone&Style</p>
+                </div>
+                
+                <!-- ПОИСК -->
+                <div class="search-wrapper">
+                  <input type="text" id="searchInput" placeholder="Поиск товаров..." aria-label="Поиск товаров" />
+                  <button class="clear-btn" id="clearBtn" aria-label="Очистить поиск">&times;</button>
+                  <button id="search-btn" class="search-btn" onclick="search()" aria-label="Искать товары">
+                    <img src="./image/search.png" width="20px" height="20px" alt="Поиск" />
+                  </button>
+                </div>
+                <ul class="header__top-list">
+                  <li class="header__top-item">
+                    <button class="header__button" onclick="toggleCart(true)">
+                      <img src="./image/корзина.png" alt="Корзина"> <p>Корзина</p>
+                    </button>
+                  </li>
+                  <li class="header__top-item header__top-item--last">
+                    <button class="header__button" onclick="toggleFavorites(true)">
+                      <img src="./image/понравилось.png" alt="Нравится"> <p>Нравится</p>
+                    </button>
+                  </li>
+                  <li id="loginContainer" class="header__top-item"></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="header__body">
+          <div class="container">
+            <div class="header__body-inner">
+
+              <div id="notFoundMessage" class="not-found" style="display: none;">
+                <p class="not-found__text">Товар не найден :(</p>
+              </div>
+              <!-- ТОВАРЫ -->
+              <div class="product__inner">
+                <!-- Товар 1 -->
+                <div class="product">
+                  <img src="./image/pods-1.jpg" width="200px" alt="AirPods Pro 2 premium">
+                  <div class="span__box">
+                    <span class="span__price">1019 ₽</span>
+                    <span class="span__text">AirPods Pro 2 premium</span>
+                  </div>
+                  <button class="add-btn" data-product="AirPods Pro 2 premium"
+                    onclick="addToCart('AirPods Pro 2 premium', 1019, './image/pods-1.jpg', this)">Добавить в
+                    корзину</button>
+                  <button class="fav-btn" data-product="AirPods Pro 2 premium"
+                    onclick="addToFavorites('AirPods Pro 2 premium', 1019, './image/pods-1.jpg', this)">❤ В
+                    избранное</button>
+                  <button class="buy-btn" data-product="AirPods Pro 2 premium"
+                    data-description="🎧 Новые AirPods Pro 2 premium.<br>📦 Полный комплект в коробке<br>🎁 Чехол в подарок.<br>🔊 Шумоподавление и сенсорное управление.<br>⚡️ Отличное качество звука.">Купить</button>
+                </div>
+
+                <!-- Товар 2 -->
+                <div class="product">
+                  <img src="./image/чехол-4.jpg" width="200px" alt="Чехол для AirPods">
+                  <div class="span__box">
+                    <span class="span__price">250 ₽</span>
+                    <span class="span__text">Чехол для AirPods</span>
+                  </div>
+                  <button class="add-btn" data-product="Чехол для AirPods"
+                    onclick="addToCart('Чехол для AirPods', 250, './image/чехол-4.jpg', this)">Добавить в
+                    корзину</button>
+                  <button class="fav-btn" data-product="Чехол для AirPods"
+                    onclick="addToFavorites('Чехол для AirPods', 250, './image/чехол-4.jpg', this)">❤ В
+                    избранное</button>
+                  <button class="buy-btn" data-product="Чехол для AirPods"
+                    data-description="🛡 Чехол для AirPods.<br>🎨 Разные цвета.<br>✅ Защита от ударов и пыли.<br>📱 Лёгкий и компактный.">Купить</button>
+                </div>
+              </div>
+
+              <!-- Попап корзины -->
+              <div class="overlay" id="overlay" onclick="toggleCart(false)"></div>
+              <div class="cart-popup" id="cartPopup">
+                <div class="container container__popup">
+                  <div class="popup__inner">
+                    <button class="close-btn" onclick="toggleCart(false)" aria-label="Закрыть корзину">Назад</button>
+                    <h2 id="cartHeaderText">Корзина:</h2>
+                    <div id="cart-items"></div>
+                    <div id="emptyCartMessage" class="empty-cart" style="display: none;">
+                      <p class="empty-cart__text">В корзине пока пусто</p>
+                      <button class="empty-cart__btn" onclick="window.location.href='index.html'">За покупками</button>
+                    </div>
+                    <div class="cart-total" id="cart-total">Итого: 0 ₽</div>
+                    <button class="total__btn" onclick="clearCart()">Очистить корзину</button>
+                  </div>
+                </div>
+              </div>
+              <div id="add-alert" class="add-alert">
+                <img src="./image/галочка.png" width="14px" alt="Успешно добавлено"> Товар добавлен в корзину
+              </div>
+
+              <!-- Попап избранного -->
+              <div class="overlay" id="favOverlay" onclick="toggleFavorites(false)"></div>
+              <div class="cart-popup" id="favPopup">
+                <div class="container container__popup">
+                  <div class="popup__inner">
+                    <button onclick="clearFavorites()" class="clear-btn">Очистить избранное</button>
+                    <button class="close-btn" onclick="toggleFavorites(false)">Назад</button>
+                    <h2>Избранное:</h2>
+                    <div class="fav-items" id="fav-items"></div>
+                    <div id="emptyFavMessage" class="empty-cart" style="display: none;">
+                      <p class="empty-cart__text">В избранном пока пусто</p>
+                      <button class="empty-cart__btn" onclick="window.location.href='index.html'">За покупками</button>
+                    </div>
+                    <div class="fav-total" id="fav-total">Итого: 0 ₽</div>
+                    <button class="total__btn" onclick="clearFavorites()">Очистить избранное</button>
+                  </div>
+                </div>
+              </div>
+              <div class="add-alert fav-alert" id="fav-alert">
+                <img src="./image/галочка.png" width="14px"> Товар добавлен в избранное
+              </div>
+
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-container">
+        <div class="footer-section">
+          <h3>Контакты</h3>
+          <p><img src="./image/phone.png" alt="Телефон" class="footer-icon"> <a href="tel:+79016575203">+7 (901)
+              657-52-03</a></p>
+          <p><img src="./image/mail.png" alt="Email" class="footer-icon"> <a
+              href="mailto:pijamadima@gmail.com">pijamadima@gmail.com</a></p>
+        </div>
+        <div class="footer-section footer-section--empty">
+          <h3>Информация о доставке</h3>
+          <p><img src="./image/доставака.png" width="20px" alt=""> Срок доставки: 1-10 рабочих дней.</p>
+          <p><img src="./image/кейс.png" width="20px" alt=""> Надёжная доставка — ваша посылка в безопасности.</p>
+        </div>
+        <div class="footer-section">
+          <h3>Каналы</h3>
+          <p><img src="./image/тг.png" alt="Telegram" class="footer-icon"> <a href="https://t.me/mystoreTonStyle"
+              target="_blank">Перейти в Телеграм-канал</a></p>
+          <p><img src="./image/tt.png" alt="Tiktok" class="footer-icon"> <a
+              href="https://www.tiktok.com/@tone.style6?_t=ZP-904OyrKxUK6&_r=1" target="_blank">Перейти в
+              Тикток-канал</a></p>
+          <p><img src="./image/Avito.PNG" alt="Avito" class="footer-icon"> <a
+              href="https://www.avito.ru/brands/0aee4b0abcecc0feea045a06c90b429f" target="_blank">Перейти на Авито</a>
+          </p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 Tone & Style. Все права защищены.</p>
+      </div>
+    </footer>
+
+
+    <!-- Modal продукта -->
+    <div id="productModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <div class="slider-container">
+          <button class="slider-prev" onclick="prevSlide()">&#10094;</button>
+          <img id="modalImg" src="" alt="" class="slider-image">
+          <button class="slider-next" onclick="nextSlide()">&#10095;</button>
+        </div>
+        <div class="modal__buy">
+          <h3 id="modalName" class="modalName"></h3>
+          <p id="modalPrice" class="modalPrice"></p>
+          <p id="modalPriceText" class="modalPriceText">
+            🎧 Абсолютно новые, не использовались<br><br>
+            📦 Полный комплект в коробке<br><br>
+            🎁 Чехол для наушников в подарок<br><br>
+            🔊 Работает шумоподавление, прозрачный режим, сенсорное управление<br><br>
+            📱 Подключается к iPhone и Android<br><br>
+            ⚡️ Хорошо держат заряд и качество звука<br><br>
+            ❗️ Это не оригинал, достойная реплика - отличное соотношение качества и цены
+          </p>
+          <button id="modalAddBtn" class="modalAddBtn">Добавить в корзину</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Оформление заказа -->
+    <div class="order-popup" id="orderPopup">
+      <div class="order-content">
+        <span class="close-order" id="closeOrder">&times;</span>
+        <h2>Оформление заказа</h2>
+        <form id="orderForm">
+          <input type="hidden" id="orderProduct" name="product">
+
+          <label for="name"><img src="./image/иконка человека.png" width="20px" alt=""> Ваше имя:</label>
+          <input type="text" id="name" name="name" required>
+
+          <label for="phone"><img src="./image/phone.png" width="16px" alt=""> Телефон:</label>
+          <input type="tel" id="phone" name="phone" required>
+
+          <label for="address"><img src="./image/address.png" width="16px" alt=""> Адрес доставки:</label>
+          <textarea id="address" name="address" required></textarea>
+
+          <button type="submit">Отправить заказ</button>
+        </form>
+      </div>
+    </div>
+    <div class="overlay" id="orderOverlay"></div>
+
+
+    <script src="./main.js"></script>
+</body>
+
+</html>
